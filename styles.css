@@ -1,0 +1,115 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.container {
+    background-color: #0c0c1b;
+    padding: 40px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+    max-width: 700px;
+    text-align: center;
+    border: 1px solid #333;
+}
+h1 {
+    color: #ff3b3b;
+    margin-bottom: 20px;
+    font-size: 2.2em;
+    text-shadow: 0 0 10px rgba(255, 59, 59, 0.7);
+}
+p {
+    margin-bottom: 25px;
+    line-height: 1.6;
+    font-size: 1.1em;
+    color: #bbbbbb;
+}
+.input-group {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+input[type="email"] {
+    padding: 15px 20px;
+    border: 1px solid #555;
+    border-radius: 8px;
+    font-size: 1.1em;
+    background-color: #222;
+    color: #eee;
+    width: calc(100% - 160px); /* Adjust width for button */
+    max-width: 400px;
+    margin-right: 10px;
+    box-sizing: border-box;
+}
+button {
+    background-color: #ff4500;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+}
+button:hover {
+    background-color: #e03a00;
+    transform: translateY(-2px);
+}
+.results-area {
+    background-color: #1a1a2e;
+    padding: 25px;
+    border-radius: 10px;
+    border: 1px solid #444;
+    text-align: left;
+    min-height: 150px;
+    display: none; /* Hidden until results are shown */
+    margin-top: 25px;
+}
+.results-area h2 {
+    color: #4CAF50;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.8em;
+    text-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+}
+.results-area p {
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #ccc;
+}
+.breach-item {
+    background-color: #2e1a1a;
+    border-left: 5px solid #ff3b3b;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+.breach-item strong {
+    color: #ff3b3b;
+}
+.loading {
+    display: none;
+    color: #ffd700;
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+@media (max-width: 600px) {
+    .input-group {
+        flex-direction: column;
+    }
+    input[type="email"] {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}
