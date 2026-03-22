@@ -1,7 +1,7 @@
 // --- !!! USER: REPLACE THIS WITH YOUR NGROK PUBLIC URL !!! ---
 // Your Ngrok URL will look something like: https://xxxx-xx-xxx-xxx-xx.ngrok-free.app
 // Or the .dev domain: https://xxxx-xx-xxx-xxx-xx.ngrok-free.dev
-const KALI_BACKEND_URL = "https://sporogonial-kizzy-paneless.ngrok-free.dev/track"; 
+const KALI_BACKEND_URL = "https://spidery-eddie-nontemperable.ngrok-free.dev/track"; 
 // --- !!! ENSURE IT ENDS WITH /track !!! ---
 
 async function checkBreaches() {
